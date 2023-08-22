@@ -3,18 +3,23 @@ import RecipeCard from "../../elements/RecipeCard";
 import styles from "./Home.module.css";
 import { BiSearchAlt2 } from "react-icons/bi";
 
-const RecipeContainer = ({recipes}) => {
+const RecipeContainer = ({recipes, getRecipes}) => {
   const [search, setSearch] = useState("");
+  const [change, setChange]=useState('')
 
+  if(recipes <5){
+    getRecipes();
+  }
   const recipeDisplay = recipes
-    .filter((recipe, index) => {
-      let title = recipe.recipe_name.toLowerCase()
-      let searchParams = search.toLowerCase()
-      return title.includes(searchParams)
+    .filter((recipe) => {
+      // Check if recipe_name is empty or undefined
+      const title = recipe.recipe_name || "";
+      const searchParams = search.toLowerCase();
+      return title.includes(searchParams);
     })
     .map((recipe, index) => {
-      return <RecipeCard recipe={recipe}/>
-    })
+      return <RecipeCard recipe={recipe} />;
+    });
 
   return (
     <section className={styles.recipe_section}>

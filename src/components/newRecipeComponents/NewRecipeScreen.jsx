@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import styles from "./NewRecipe.module.css";
 import { Formik } from "formik";
-import axios from "axios";
 
-const NewRecipeScreen = () => {
+
+const NewRecipeScreen = ({addRecipe}) => {
+  
   const [ingredients, setIngredients] = useState([]);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
-  const url = "https://recipes.devmountain.com";
+  const [recipesData, setRecipesData]= useState([]);
 
   const addIngredient = () => {
     setIngredients([...ingredients, { name, quantity }]);
@@ -17,8 +18,8 @@ const NewRecipeScreen = () => {
 
   const initialValues = {
     type: "",
-    recipeName: "",
-    imageURL: "",
+    recipe_name: "",
+    image_url: "",
     prepTime: "",
     cookTime: "",
     serves: "",
@@ -29,16 +30,11 @@ const NewRecipeScreen = () => {
   const onSubmit = (values) => {
     values.ingredients = ingredients;
     console.log(values);
+   setRecipesData(values)
+   addRecipe(recipesData)
+  
   };
-  //   axios
-  //     .post(`https://recipes.devmountain.com/recipes`, values)
-  //     .then((res) => {
-  //       console.log(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+console.log(recipesData);
 
   const ingredientDisplay = ingredients.map((ing) => {
     return (
@@ -57,15 +53,15 @@ const NewRecipeScreen = () => {
             <div className={styles.input_container}>
               <input
                 placeholder="Title your Recipe!"
-                value={values.recipeName}
+                value={values.recipe_name}
                 onChange={handleChange}
-                name="recipeName"
+                name="recipe_name"
               />
               <input
                 placeholder="Paste an Image URL"
-                value={values.imageURL}
+                value={values.image_url}
                 onChange={handleChange}
-                name="imageURL"
+                name="image_url"
               />
             </div>
             <div className={styles.radio_container}>

@@ -17,7 +17,7 @@ const DetailScreen = () => {
       .then((res) => {
       setRecipe(res.data);
     });
-  }, []);
+  }, );
 
   
   return (

@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+
+import { useState, useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import DetailScreen from "./components/detailComponents/DetailScreen";
@@ -10,13 +10,23 @@ import NewRecipeScreen from "./components/newRecipeComponents/NewRecipeScreen";
 
 
 function App() {
+  const [recipes, setRecipes]= useState([]);
+
+useEffect(()=>{
+  console.log(recipes)
+},[recipes])
+
+  const addRecipe = (newRecipe) =>{
+    setRecipes([newRecipe])
+
+  }
   return (
     <div className="App">
       <Header />
       <main>
         <Routes>
-          <Route index element={<HomeScreen />} />
-          <Route path="newRecipe" element={<NewRecipeScreen />} />
+          <Route index element={<HomeScreen addedRecipes={recipes} />} />
+          <Route path="newRecipe" element={<NewRecipeScreen addRecipe={addRecipe}/>} />
           <Route path="/recipe/:id" element={<DetailScreen />} />
         </Routes>
       </main>
