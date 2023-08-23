@@ -27,7 +27,7 @@ useEffect(()=>{
         <Routes>
           <Route index element={<HomeScreen addedRecipes={recipes} />} />
           <Route path="newRecipe" element={<NewRecipeScreen addRecipe={addRecipe}/>} />
-          <Route path="/recipe/:id" element={<DetailScreen />} />
+          <Route path="/recipe/:id" element={<DetailScreen  />} />
         </Routes>
       </main>
       <Footer />

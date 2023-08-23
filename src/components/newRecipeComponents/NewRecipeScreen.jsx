@@ -1,58 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./NewRecipe.module.css";
 import { Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 
+const NewRecipeScreen = ({ addRecipe }) => {
+	const navigate = useNavigate();
+	const [ingredients, setIngredients] = useState([]);
+	const [name, setName] = useState("");
+	const [quantity, setQuantity] = useState("");
+	const [recipesData, setRecipesData] = useState([]);
+	const [formSaved, setFormSaved] = useState(false);
 
-const NewRecipeScreen = ({addRecipe}) => {
-  
-  const [ingredients, setIngredients] = useState([]);
-  const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [recipesData, setRecipesData]= useState([]);
+	const addIngredient = () => {
+		setIngredients([...ingredients, { name, quantity }]);
+		setName("");
+		setQuantity("");
+	};
 
-  const addIngredient = () => {
-    setIngredients([...ingredients, { name, quantity }]);
-    setName("");
-    setQuantity("");
-  };
-
-  const initialValues = {
-    type: "",
-    recipe_name: "",
-    image_url: "",
-    prepTime: "",
-    cookTime: "",
-    serves: "",
-    ingredients: [],
-    instructions: "",
-  };
-
-  const onSubmit = (values) => {
-    values.ingredients = ingredients;
+	const initialValues = {
+		type: "",
+		recipe_name: "",
+		image_url: "",
+		prep_time: "",
+		cook_time: "",
+		serves: "",
+		ingredients: [],
+		instructions: "",
+	};
+	const onClickHandler = () => {
+		setFormSaved(false);
+		navigate(`/`);
+	};
+	const onSubmit = (values) => {
+		values.ingredients = ingredients;
     console.log(values);
-   setRecipesData(values)
-   addRecipe(recipesData)
-  
-  };
-console.log(recipesData);
+    addRecipe(recipesData);
+		setRecipesData(values);
+		setFormSaved(true);
+	};
+	console.log(recipesData);
 
-  const ingredientDisplay = ingredients.map((ing) => {
-    return (
-      <li>
-        {ing.quantity} {ing.name}
-      </li>
-    );
-  });
-
-  return (
+	const ingredientDisplay = ingredients.map((ing) => {
+		return (
+			<li>
+				{ing.quantity} {ing.name}
+			</li>
+		);
+	});
+  useEffect(() => {
+    console.log(recipesData)
+    addRecipe(recipesData)
+},[recipesData])
+	return (
 		<section>
 			<h1>Tell us about your Recipe!</h1>
 			<Formik
 				initialValues={initialValues}
 				onSubmit={onSubmit}>
 				{({ values, handleChange, handleSubmit }) => (
-          <fieldset>
-            <legend>Recipe Form</legend>
+					<fieldset>
+						<legend>Recipe Form</legend>
 						<form onSubmit={handleSubmit}>
 							<div className={styles.input_container}>
 								<input
@@ -100,15 +107,15 @@ console.log(recipesData);
 							<div className={styles.input_container}>
 								<input
 									placeholder='Prep Time'
-									value={values.prepTime}
+									value={values.prep_time}
 									onChange={handleChange}
-									name='prepTime'
+									name='prep_time'
 								/>
 								<input
 									placeholder='Cook Time'
-									value={values.cookTime}
+									value={values.cook_time}
 									onChange={handleChange}
-									name='cookTime'
+									name='cook_time'
 								/>
 								<input
 									placeholder='Serves'
@@ -149,8 +156,15 @@ console.log(recipesData);
 							<button
 								type='submit'
 								className={styles.buttons}>
-								Submit
+								Save
 							</button>
+							{formSaved && (
+								<button
+									onClick={onClickHandler}
+									className={styles.buttons}>
+									Return to Recipes
+								</button>
+							)}
 						</form>
 					</fieldset>
 				)}

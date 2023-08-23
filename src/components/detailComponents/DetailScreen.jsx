@@ -6,7 +6,7 @@ import styles from "./Details.module.css";
 
 const DetailScreen = () => {
   const { id } = useParams();
-  // The rest of your component...
+  
   const [recipe, setRecipe] = useState({});
   const url = "https://recipes.devmountain.com";
   console.log(recipe);

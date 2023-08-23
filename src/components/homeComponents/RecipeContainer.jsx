@@ -12,13 +12,12 @@ const RecipeContainer = ({recipes, getRecipes}) => {
   }
   const recipeDisplay = recipes
     .filter((recipe) => {
-      // Check if recipe_name is empty or undefined
       const title = recipe.recipe_name || "";
       const searchParams = search.toLowerCase();
       return title.includes(searchParams);
     })
     .map((recipe, index) => {
-      return <RecipeCard recipe={recipe} />;
+      return <RecipeCard recipe={recipe} key={index} />;
     });
 
   return (

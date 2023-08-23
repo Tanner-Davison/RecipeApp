@@ -1,42 +1,54 @@
-import React, {useEffect, useState} from 'react'
-import AdBanner from './AdBanner'
-import RecipeContainer from './RecipeContainer'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import AdBanner from "./AdBanner";
+import RecipeContainer from "./RecipeContainer";
+import axios from "axios";
 
-const HomeScreen = ({addedRecipes}) => {
-  const [recipes, setRecipes] = useState([])
-  const [addedRecipesChange, setChange]=useState([])
-  const url = 'https://recipes.devmountain.com'
-  
+const HomeScreen = ({ addedRecipes }) => {
+	const [recipes, setRecipes] = useState([]);
+	const url = "https://recipes.devmountain.com";
 
-  
-  const getRecipes = () => {
-    axios
-      .get(`${url}/recipes`)
-      .then((res) => {
-        setRecipes(res.data)
-        if(addedRecipes.length !== 0){
-          setRecipes([...addedRecipes, res.data])
-        }else{
-          setRecipes(res.data)
-        }
-        console.log(res.data)
-        console.log(addedRecipes)
-      })
-  }
+	const hasEmptyValues = (recipe) => {
+		for (const key in recipe) {
+			if (recipe.hasOwnProperty(key)) {
+				if (
+					recipe[key] === "" ||
+					recipe[key] === null ||
+					recipe[key] === undefined
+				) {
+					return true;
+				}
+			}
+		}
+		return false;
+	};
 
-  useEffect(() => {
-    getRecipes()
-    
-  },[])
+	const getValidRecipes = (recipeArray) => {
+		return recipeArray.filter((recipe) => !hasEmptyValues(recipe));
+	};
 
+	const getRecipes = () => {
+		axios.get(`${url}/recipes`).then((res) => {
+			const allRecipes = res.data;
+			const validAllRecipes = getValidRecipes(allRecipes);
+			const validAddedRecipe = getValidRecipes(addedRecipes);
 
-  return (
-    <div>
-      <AdBanner />
-      <RecipeContainer getRecipes={getRecipes} recipes={recipes}/>
-    </div>
-  )
-}
+			setRecipes([...validAddedRecipe, ...validAllRecipes]);
+		});
+	};
 
-export default HomeScreen
+	useEffect(() => {
+		getRecipes();
+	}, []);
+
+	return (
+		<div>
+			<AdBanner />
+			<RecipeContainer
+				getRecipes={getRecipes}
+				recipes={recipes}
+			/>
+		</div>
+	);
+};
+
+export default HomeScreen;
