@@ -5,7 +5,7 @@ import { BiSearchAlt2 } from "react-icons/bi";
 
 const RecipeContainer = ({recipes, getRecipes}) => {
   const [search, setSearch] = useState("");
-  const [change, setChange]=useState('')
+  
 
   if(recipes <5){
     getRecipes();
@@ -23,7 +23,7 @@ const RecipeContainer = ({recipes, getRecipes}) => {
 
   return (
     <section className={styles.recipe_section}>
-      <h2>Search a recipe!</h2>
+      <h2 style={{ color: 'black' ,fontWeight:'bold'}}>Search a recipe!</h2>
       <span className={styles.search_bar}>
         <BiSearchAlt2 size="2em" color="#DA7635" />
         <input
